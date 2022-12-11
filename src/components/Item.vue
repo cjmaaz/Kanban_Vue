@@ -12,7 +12,7 @@ const props = defineProps({
       {{ each.title }}
     </span>
     <span>
-      ...
+      ⚙️
     </span>
   </div>
   <div class="details">
@@ -31,7 +31,7 @@ const props = defineProps({
   }
 
   span:not(.info) {
-    transform: translateY(-10px);
+    font-size: medium;
     cursor: context-menu;
   }
 }

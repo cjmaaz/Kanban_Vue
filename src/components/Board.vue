@@ -35,40 +35,47 @@ function handleDragOver(e) {
   e.dataTransfer.dropEffect = 'move';
   return false;
 }
+function handleDragEnter(e) {
+  e.target.classList.add('over');
+}
+
+function handleDragLeave(e) {
+  e.target.classList.remove('over');
+}
 
 const store = useProjectStore();
 </script>
 <template>
   <div class="board">
-    <div class="status_board">
+    <div class="status_board" draggable="true">
       <div class="header">
         <h5>New</h5>
         <button>+</button>
       </div>
       <div class="items">
-        <div v-for="item in store.newBoard" v-if="store.newBoard.length" class="each__title" draggable="true" @dragstart="handleDragStart" @dragend="handleDragEnd" @dragover="handleDragOver">
+        <div v-for="item in store.newBoard" v-if="store.newBoard.length" class="each__title" draggable="true" @dragstart="handleDragStart" @dragend="handleDragEnd">
           <Item :each="item" />
         </div>
       </div>
     </div>
-    <div class="status_board">
+    <div class="status_board" @dragover="handleDragOver" @dragenter="handleDragEnter" @dragleave="handleDragLeave">
       <div class="header">
         <h5>In Progress</h5>
         <button>+</button>
       </div>
       <div class="items">
-        <div v-for="item in store.progressBoard" v-if="store.progressBoard.length" class="each__title" draggable="true" @dragstart="handleDragStart" @dragend="handleDragEnd" @dragover="handleDragOver">
+        <div v-for="item in store.progressBoard" v-if="store.progressBoard.length" class="each__title" draggable="true" @dragstart="handleDragStart" @dragend="handleDragEnd">
           <Item :each="item" />
         </div>
       </div>
     </div>
-    <div class="status_board">
+    <div class="status_board" @dragover="handleDragOver" @dragenter="handleDragEnter" @dragleave="handleDragLeave">
       <div class="header">
         <h5>Released</h5>
         <button>+</button>
       </div>
       <div class="items">
-        <div v-for="item in store.releasedBoard" v-if="store.releasedBoard.length" class="each__title" draggable="true" @dragstart="handleDragStart" @dragend="handleDragEnd" @dragover="handleDragOver">
+        <div v-for="item in store.releasedBoard" v-if="store.releasedBoard.length" class="each__title" draggable="true" @dragstart="handleDragStart" @dragend="handleDragEnd">
           <Item :each="item" />
         </div>
       </div>
@@ -84,7 +91,7 @@ const store = useProjectStore();
 
   .status_board {
     border: 2px dotted rgb(196, 196, 196);
-    border-radius: 1em;
+    border-radius: .5em;
     padding: 1em;
     background-color: hsl(220, 16%, 96%);
     box-shadow:
@@ -92,6 +99,25 @@ const store = useProjectStore();
       1.9px 2.3px 2.9px -1px rgba(0, 0, 0, 0.048),
       3.6px 4.4px 5.4px -1px rgba(0, 0, 0, 0.06),
       6.5px 7.8px 9.6px -1px rgba(0, 0, 0, 0.072);
+
+    &:first-child {
+      background: linear-gradient(45deg, rgb(243, 215, 221), #fff);
+      //background-color: rgb(243, 215, 221);
+    }
+
+    &:nth-child(2) {
+      background: linear-gradient(45deg, rgb(243, 243, 215), #fff);
+      //background-color: rgb(243, 243, 215);
+    }
+
+    &:last-child {
+      background: linear-gradient(45deg, rgb(224, 247, 226), #fff);
+      //background-color: rgb(224, 247, 226);
+    }
+
+    &.over {
+      border: 3px dotted #666;
+    }
 
     .header {
       display: flex;
@@ -135,7 +161,7 @@ const store = useProjectStore();
         font-size: x-large;
         background-color: #fff;
         padding: .5em;
-        margin: .25em 0px;
+        margin: .5em 0px;
         border-radius: .5em;
         cursor: grab;
         box-shadow:
@@ -156,10 +182,6 @@ const store = useProjectStore();
             12.1px 14.6px 18px -1px rgba(0, 0, 0, 0.086),
             29px 35px 43px -1px rgba(0, 0, 0, 0.12),
             10.5px 7.8px 9.6px -1px rgba(0, 0, 0, 0.072);
-        }
-
-        &.over {
-          border: 3px dotted #666;
         }
       }
     }
