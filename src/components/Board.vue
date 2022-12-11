@@ -90,7 +90,7 @@ const store = useProjectStore();
   gap: 1em;
 
   .status_board {
-    border: 2px dotted rgb(196, 196, 196);
+    border: 1px solid rgb(196, 196, 196);
     border-radius: .5em;
     padding: 1em;
     background-color: hsl(220, 16%, 96%);

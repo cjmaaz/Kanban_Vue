@@ -8,7 +8,9 @@ export const useProjectStore = defineStore('project', () => {
     { title: 'Superior Reporting', details: 'Manager can get details on ticket closure, hours spent on each tickets', id: 77384, assigned: 'M' },
     { title: 'Assign', details: 'Assign each ticket to respective teammate.', id: 77385, assigned: 'A' }
   ]);
-  const progressBoard = ref([{ title: 'Not Responsive', details: 'We are not looking to make it responsive as of now.', id: 77392, assigned: 'A' }]);
+  const progressBoard = ref([
+    { title: 'Not Responsive', details: 'We are not looking to make it responsive as of now.', id: 77392, assigned: 'A' }
+  ]);
   const releasedBoard = ref([]);
   return { newBoard, progressBoard, releasedBoard }
 })
