@@ -11,24 +11,22 @@ function handleDragStart(e) {
   } else {
     e.target.style.setProperty('rotate', '-4deg');
   }
-
   e.target.style.transform = 'translateX(50px)';
-  // dragSrcEl = e.target;
-
-  // e.dataTransfer.effectAllowed = 'move';
-  // e.dataTransfer.setData('text/html', this.innerHTML);
+  dragSrcEl = e.target;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/html', e.target.innerHTML);
 }
 function handleDragEnd(e) {
   e.target.style.removeProperty('rotate');
   e.target.style.removeProperty('opacity');
   e.target.style.removeProperty('transform');
 
-  // items.forEach(function (item) {
-  //   item.classList.remove('over');
-  // });
+  let items = document.querySelectorAll('div.status_board');
+  items.forEach(function (item) {
+    item.classList.remove('over');
+  });
 }
 function handleDragOver(e) {
-  console.log(e);
   if (e.preventDefault) {
     e.preventDefault();
   }
@@ -43,39 +41,51 @@ function handleDragLeave(e) {
   e.target.classList.remove('over');
 }
 
+function handleDrop(e) {
+  if (e.stopPropagation) {
+    e.stopPropagation(); // stops the browser from redirecting.
+  }
+  console.log(e);
+  // if (dragSrcEl != e.target) {
+  //   dragSrcEl.innerHTML = e.target.innerHTML;
+  //   e.target.innerHTML = e.dataTransfer.getData('text/html');
+  // }
+  // return false;
+}
 const store = useProjectStore();
+
 </script>
 <template>
   <div class="board">
-    <div class="status_board" draggable="true">
+    <div class="status_board" data-stateId="newBoard">
       <div class="header">
         <h5>New</h5>
         <button>+</button>
       </div>
       <div class="items">
-        <div v-for="item in store.newBoard" v-if="store.newBoard.length" class="each__title" draggable="true" @dragstart="handleDragStart" @dragend="handleDragEnd">
+        <div v-for="item in store.newBoard" v-if="store.newBoard.length" :key="item.id" draggable="true" @dragstart="handleDragStart" @dragend="handleDragEnd">
           <Item :each="item" />
         </div>
       </div>
     </div>
-    <div class="status_board" @dragover="handleDragOver" @dragenter="handleDragEnter" @dragleave="handleDragLeave">
+    <div class="status_board" data-stateId="progressBoard" @drop="handleDrop" @dragover="handleDragOver" @dragenter="handleDragEnter" @dragleave="handleDragLeave">
       <div class="header">
         <h5>In Progress</h5>
         <button>+</button>
       </div>
       <div class="items">
-        <div v-for="item in store.progressBoard" v-if="store.progressBoard.length" class="each__title" draggable="true" @dragstart="handleDragStart" @dragend="handleDragEnd">
+        <div v-for="item in store.progressBoard" v-if="store.progressBoard.length" :key="item.id" draggable="true" @dragstart="handleDragStart" @dragend="handleDragEnd">
           <Item :each="item" />
         </div>
       </div>
     </div>
-    <div class="status_board" @dragover="handleDragOver" @dragenter="handleDragEnter" @dragleave="handleDragLeave">
+    <div class="status_board" data-stateId="releasedBoard" @drop="handleDrop" @dragover="handleDragOver" @dragenter="handleDragEnter" @dragleave="handleDragLeave">
       <div class="header">
         <h5>Released</h5>
         <button>+</button>
       </div>
       <div class="items">
-        <div v-for="item in store.releasedBoard" v-if="store.releasedBoard.length" class="each__title" draggable="true" @dragstart="handleDragStart" @dragend="handleDragEnd">
+        <div v-for="item in store.releasedBoard" v-if="store.releasedBoard.length" :key="item.id" draggable="true" @dragstart="handleDragStart" @dragend="handleDragEnd">
           <Item :each="item" />
         </div>
       </div>
@@ -156,34 +166,6 @@ const store = useProjectStore();
 
     .items {
       margin-top: 1em;
-
-      .each__title {
-        font-size: x-large;
-        background-color: #fff;
-        padding: .5em;
-        margin: .5em 0px;
-        border-radius: .5em;
-        cursor: grab;
-        box-shadow:
-          0.8px 1px 1.2px -1px rgba(0, 0, 0, 0.034),
-          1.9px 2.3px 2.9px -1px rgba(0, 0, 0, 0.048),
-          3.6px 4.4px 5.4px -1px rgba(0, 0, 0, 0.06),
-          6.5px 7.8px 9.6px -1px rgba(0, 0, 0, 0.072),
-          12.1px 14.6px 18px -1px rgba(0, 0, 0, 0.086),
-          29px 35px 43px -1px rgba(0, 0, 0, 0.12);
-
-        &:hover {
-          transform: translateY(-5px);
-          box-shadow:
-            0.8px 1px 1.2px -1px rgba(0, 0, 0, 0.034),
-            1.9px 2.3px 2.9px -1px rgba(0, 0, 0, 0.048),
-            3.6px 4.4px 5.4px -1px rgba(0, 0, 0, 0.06),
-            6.5px 7.8px 9.6px -1px rgba(0, 0, 0, 0.072),
-            12.1px 14.6px 18px -1px rgba(0, 0, 0, 0.086),
-            29px 35px 43px -1px rgba(0, 0, 0, 0.12),
-            10.5px 7.8px 9.6px -1px rgba(0, 0, 0, 0.072);
-        }
-      }
     }
   }
 }
