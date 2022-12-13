@@ -7,7 +7,7 @@ const props = defineProps({
 })
 </script>
 <template>
-  <div class="each__title" :data-id="each.id">
+  <div class="each__title" :data-id="each.id" :data-board="each.board">
     <div class="title">
       <span class="info">
         {{ each.title }}
@@ -94,7 +94,7 @@ const props = defineProps({
           display: block;
           position: absolute;
           top: 7px;
-          right: 50px;
+          right: 40px;
           content: attr(name);
           width: max-content;
           color: #3d3d3d;

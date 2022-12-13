@@ -1,6 +1,7 @@
 <script setup>
 import { useProjectStore } from '@/stores/project'
 import Item from './Item.vue';
+const store = useProjectStore();
 
 let dragSrcEl = null;
 
@@ -11,7 +12,12 @@ function handleDragStart(e) {
   } else {
     e.target.style.setProperty('rotate', '-4deg');
   }
-  e.target.style.transform = 'translateX(50px)';
+  if (e.target.firstChild.dataset.board === 'releasedBoard') {
+    e.target.style.transform = 'translateX(-50px)';
+  } else {
+    e.target.style.transform = 'translateX(50px)';
+  }
+
   dragSrcEl = e.target;
   e.dataTransfer.effectAllowed = 'move';
   e.dataTransfer.setData('text/html', e.target.innerHTML);
@@ -45,19 +51,16 @@ function handleDrop(e) {
   if (e.stopPropagation) {
     e.stopPropagation(); // stops the browser from redirecting.
   }
-  console.log(e);
-  // if (dragSrcEl != e.target) {
-  //   dragSrcEl.innerHTML = e.target.innerHTML;
-  //   e.target.innerHTML = e.dataTransfer.getData('text/html');
-  // }
-  // return false;
+  // console.log('From: Id: ', dragSrcEl.firstChild.dataset.id);
+  // console.log('From: Board: ', dragSrcEl.firstChild.dataset.board);
+  // console.log('To Board: ', e.currentTarget.dataset.stateid);
+  store.mutateBoard(dragSrcEl.firstChild.dataset.board, dragSrcEl.firstChild.dataset.id, e.currentTarget.dataset.stateid)
 }
-const store = useProjectStore();
 
 </script>
 <template>
   <div class="board">
-    <div class="status_board" data-stateId="newBoard">
+    <div class="status_board" data-stateId="newBoard" @drop="handleDrop" @dragover="handleDragOver" @dragenter="handleDragEnter" @dragleave="handleDragLeave">
       <div class="header">
         <h5>New</h5>
         <button>+</button>
@@ -111,7 +114,7 @@ const store = useProjectStore();
       6.5px 7.8px 9.6px -1px rgba(0, 0, 0, 0.072);
 
     &:first-child {
-      background: linear-gradient(45deg, rgb(243, 215, 221), #fff);
+      background: linear-gradient(45deg, rgb(243, 222, 215), #fff);
       //background-color: rgb(243, 215, 221);
     }
 
