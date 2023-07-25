@@ -164,7 +164,6 @@ function handleDrop(e) {
             29px 35px 43px -1px rgba(0, 0, 0, 0.12);
         }
       }
-
     }
 
     .items {
